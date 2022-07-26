@@ -1,25 +1,38 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput, Button, ImageBackground } from "react-native";
-
-// Imports the background image from the project brief
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Button,
+  ImageBackground,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import BackGroundImage from "../img/back-img.png";
 
-// Color selector for users to change background color
-// color = {
-//   pink: '#450a1e',
-//   blue: '#2742a3',
-//   green: '#1d8566',
-//   gray: '#5f6966',
-//   red: '#b50d2c',
-// }
-
 export default class Start extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = { text: '' };
-    
+
+    this.state = {
+      name: "",
+      bgColor: this.colors.pink,
+    };
   }
+
+  // Change color function
+  changeBgColor = (newColor) => {
+    this.setState({ bgColor: newColor });
+  };
+
+  // Color selector for users to change background color
+  colors = {
+    pink: "#931560",
+    blue: "#2742a3",
+    gray: "#5f6966",
+    red: "#b50d2c",
+  };
 
   render() {
     return (
@@ -30,20 +43,62 @@ export default class Start extends React.Component {
           resizeMode="cover"
           style={styles.image}
         >
-          {/* Main Input Container */}
-          <View style={styles.main}>
-            <Text>Enter your Name to proceed</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => this.setState({ text })}
-              value={this.state.text}
-              placeholder="Type here ..."
-            />
-            <Button
-              title="Enter Chatroom"
-              onPress={() => this.props.navigation.navigate("Chat")}
-            />
+          {/* Title Component */}
+          <View style={styles.titleBox}>
+            <Text style={styles.title}>CF Chat App</Text>
           </View>
+          <View style={styles.mainBox}>
+            {/* Input Component */}
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) => this.setState({ name: text })}
+                value={this.state.name}
+                placeholder="What is your name?"
+              />
+            </View>
+          </View>
+
+          <View style={styles.colorContainer}>
+            <Text style={styles.chooseColor}>
+              {""}
+              Pick your background color{""}
+            </Text>
+
+            {/* All the colors to change the background are here! */}
+            <View style={styles.colorArray}>
+              <TouchableOpacity
+                style={styles.c1}
+                onPress={() => this.changeBgColor(this.colors.pink)}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                style={styles.c2}
+                onPress={() => this.changeBgColor(this.colors.blue)}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                style={styles.c3}
+                onPress={() => this.changeBgColor(this.colors.gray)}
+              ></TouchableOpacity>
+              <TouchableOpacity
+                style={styles.c4}
+                onPress={() => this.changeBgColor(this.colors.red)}
+              ></TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.buttonPress}>
+            <Pressable
+              style={styles.button}
+              onPress={() =>
+                this.props.navigation.navigate("Chat", {
+                  name: this.state.name,
+                  bgColor: this.state.bgColor,
+                })
+              }>
+            <Text style={styles.buttonText}>Start Chatting</Text>  
+            </Pressable>
+            </View>
+          
+          
         </ImageBackground>
       </View>
     );
@@ -62,12 +117,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  main: {
-    width: "88%",
+  titleMain: {
     backgroundColor: "white",
+    height: "46%",
+    width: "88%",
+    justifyContent: "space-around",
     alignItems: "center",
-    height: "44%",
-    justifyContent: "space-evenly",
   },
 
   input: {
@@ -75,10 +130,14 @@ const styles = StyleSheet.create({
     width: "88%",
     fontSize: 16,
     fontWeight: "300",
-    color: "#757083",
+    color: "#000000",
     borderColor: "gray",
     borderWidth: 1,
     paddingHorizontal: 10,
+  },
+
+  inputBox: {
+    color: "#000000",
   },
 
   text: {
@@ -87,16 +146,44 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
 
-  colorContainer: {
-    width: "88%",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+  c1: {
+    backgroundColor: "#931560",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 
-  colorbutton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+  c2: {
+    backgroundColor: "#2742a3",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+
+  c3: {
+    backgroundColor: "#5f6966",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+
+  c4: {
+    backgroundColor: "#b50d2c",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+
+  colorArray: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+  },
+
+  chooseColor: {
+   
+    justifyContent: 'center',
+    
   },
 
   button: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,14 +14,10 @@ const Stack = createStackNavigator();
 export default class HelloWorld extends Component {
  constructor(props) {
    super(props);
-   this.state = { text: '' };
+  //  this.state = { text: '' };
  }
 
- // alert the user input
-
- alertMyText (input = []) {
-  Alert.alert(input.text);
- }
+ 
 
  render() {
   return (
