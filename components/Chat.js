@@ -15,7 +15,7 @@ export default class Chat extends React.Component {
     this.props.navigation.setOptions({ title: name });
     return (
         <View style={{
-          flex:1, justifyContent:'center', backgroundColor: bgColor, 
+          flex:1, justifyContent:'center', backgroundColor: bgColor
           }}>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1, }}
@@ -23,10 +23,19 @@ export default class Chat extends React.Component {
           value={this.state.text}
           placeholder='Type here ...'
         />
-        <Text
-        
-        >You wrote: {this.state.text}</Text>
+        <View style={styles.textWrote}>
+        <Text>You wrote: {this.state.text}</Text>
+        </View>
       </View>
     )
   }
+};
+
+const styles = StyleSheet.create({
+textWrote: {
+  paddingTop: '10%',
+  marginLeft: '1%',
+  fontSize: 24,
+  fontWeight: '400',
 }
+});
