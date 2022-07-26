@@ -28,27 +28,30 @@ export default class Start extends React.Component {
 
   // Color selector for users to change background color
   colors = {
-    pink: "#931560",
+    pink: "#eb63a7",
     blue: "#2742a3",
-    gray: "#5f6966",
-    red: "#b50d2c",
+    gray: "##97acad",
+    red: "#e63232",
   };
 
   render() {
     return (
       <View style={styles.container}>
+
         {/* Image */}
         <ImageBackground
           source={BackGroundImage}
           resizeMode="cover"
-          style={styles.image}
-        >
+          style={styles.image}>
+
           {/* Title Component */}
           <View style={styles.titleBox}>
             <Text style={styles.title}>CF Chat App</Text>
           </View>
-          <View style={styles.mainBox}>
+          
+
             {/* Input Component */}
+            
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.input}
@@ -57,9 +60,9 @@ export default class Start extends React.Component {
                 placeholder="What is your name?"
               />
             </View>
-          </View>
+          
 
-          <View style={styles.colorContainer}>
+          <View style={styles.colorBox}>
             <Text style={styles.chooseColor}>
               {""}
               Pick your background color{""}
@@ -84,7 +87,7 @@ export default class Start extends React.Component {
                 onPress={() => this.changeBgColor(this.colors.red)}
               ></TouchableOpacity>
             </View>
-          </View>
+          
           <View style={styles.buttonPress}>
             <Pressable
               style={styles.button}
@@ -96,6 +99,7 @@ export default class Start extends React.Component {
               }>
             <Text style={styles.buttonText}>Start Chatting</Text>  
             </Pressable>
+            </View>
             </View>
           
           
@@ -110,6 +114,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  colorContainer: {
+    backgroundColor: "white",
+    height: "20%"
+  },
+
   image: {
     flex: 1,
     flexDirection: "column",
@@ -117,13 +126,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  titleMain: {
-    backgroundColor: "white",
-    height: "46%",
-    width: "88%",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
+ 
 
   input: {
     height: 50,
@@ -131,13 +134,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "300",
     color: "#000000",
-    borderColor: "gray",
+    borderColor: "black",
     borderWidth: 1,
     paddingHorizontal: 10,
   },
 
   inputBox: {
-    color: "#000000",
+    backgroundColor: "#42cef5",
+  },
+
+ titleBox: {
+    height: "40%",
+    width: "88%",
+    alignItems: "center",
+    paddingTop: 100,
+  },
+
+  title: {
+    fontSize: 45,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
 
   text: {
@@ -147,7 +163,7 @@ const styles = StyleSheet.create({
   },
 
   c1: {
-    backgroundColor: "#931560",
+    backgroundColor: "#eb63a7",
     width: 50,
     height: 50,
     borderRadius: 25,
@@ -161,28 +177,40 @@ const styles = StyleSheet.create({
   },
 
   c3: {
-    backgroundColor: "#5f6966",
+    backgroundColor: "#97acad",
     width: 50,
     height: 50,
     borderRadius: 25,
   },
 
   c4: {
-    backgroundColor: "#b50d2c",
+    backgroundColor: "#e63232",
     width: 50,
     height: 50,
     borderRadius: 25,
+  },
+
+  colorBox: {
+    // marginRight: "auto",
+    paddingLeft: 15,
+    width: "88%",
+    backgroundColor: "white",
   },
 
   colorArray: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "80%",
+    marginBottom: "2%",
+    marginTop: "5%",
+    marginLeft: "8%",
   },
 
   chooseColor: {
-   
+    marginTop: "1%",
+    marginLeft: "25%",
     justifyContent: 'center',
+    
     
   },
 
@@ -191,11 +219,12 @@ const styles = StyleSheet.create({
     width: "88%",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 20,
+    
+   
   },
 
-  buttontext: {
-    color: "#ffffff",
+  buttonText: {
+    color: "#000000",
     fontSize: 16,
     fontWeight: "600",
   },
