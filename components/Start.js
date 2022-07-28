@@ -71,35 +71,19 @@ export default class Start extends React.Component {
             {/* All the colors to change the background are here! */}
             <View style={styles.colorArray}>
               <TouchableOpacity
-              accessible={true}
-              accessibilityLabel="More Options"
-              accessibilityHint="Lets you choose to send an image or your geolocation"
-              accessibilityRole="button"
                 style={styles.c1}
                 onPress={() => this.changeBgColor(this.colors.pink)}
               ></TouchableOpacity>
               <TouchableOpacity
-              accessible={true}
-              accessibilityLabel="More Options"
-              accessibilityHint="Lets you choose to send an image or your geolocation"
-              accessibilityRole="button"
                 style={styles.c2}
                 onPress={() => this.changeBgColor(this.colors.blue)}
               ></TouchableOpacity>
               <TouchableOpacity
                 style={styles.c3}
-                accessible={true}
-              accessibilityLabel="More Options"
-              accessibilityHint="Lets you choose to send an image or your geolocation"
-              accessibilityRole="button"
                 onPress={() => this.changeBgColor(this.colors.gray)}
               ></TouchableOpacity>
               <TouchableOpacity
                 style={styles.c4}
-                accessible={true}
-              accessibilityLabel="More Options"
-              accessibilityHint="Lets you choose to send an image or your geolocation"
-              accessibilityRole="button"
                 onPress={() => this.changeBgColor(this.colors.red)}
               ></TouchableOpacity>
             </View>
