@@ -178,6 +178,19 @@ export default class Chat extends React.Component {
       location: message.location || null,
     });
   };
+
+  // Offline storage
+  
+// renderInputToolbar(props) {
+//   if (this.state.isConnected == false) {
+//   } else {
+//     return(
+//       <InputToolbar
+//       {...props}
+//       />
+//     );
+//   }
+// }
   
 
   // Customize color of the chat bubbles
@@ -208,15 +221,7 @@ export default class Chat extends React.Component {
           backgroundColor: bgColor,
           
           }}>
-        {/* <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, }}
-          onChangeText={(text) => this.setState({text})}
-          value={this.state.text}
-          placeholder='Type here ...'
-        />
-        <View style={styles.textWrote}>
-        <Text>You wrote: {this.state.text}</Text>
-        </View> */}
+       
         
         
         <GiftedChat
@@ -225,6 +230,7 @@ export default class Chat extends React.Component {
           onSend={messages => this.onSend(messages)}
           user={{ _id: this.state.user._id, name: this.state.user.name }}
         />
+        {/* renderInputToolbar={this.renderInputToolbar.bind(this)} */}
         {Platform.OS === "android" ? (
           <KeyboardAvoidingView behavior="height" />
         ) : null}
