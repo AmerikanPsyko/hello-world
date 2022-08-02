@@ -7,9 +7,13 @@ import * as Location from "expo-location";
 import "firebase/firestore";
 import firebase from "firebase";
 
+
+
+
 export default class CustomActions extends React.Component {
 
-    //Upload images to firestore
+  //Upload images to firestore
+
   imageUpload = async (uri) => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -36,10 +40,10 @@ export default class CustomActions extends React.Component {
     return await snapshot.ref.getDownloadURL();
   }
 
-   //to select an existing picture
+  //to select an existing picture
 
-   imagePicker = async () => {
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+  pickImage = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
     try {
       if (status === 'granted') {
@@ -69,10 +73,8 @@ export default class CustomActions extends React.Component {
         }).catch(error => console.log(error));
 
         if (!result.cancelled) {
-           
           const imageUrl = await this.imageUpload(result.uri);
           this.props.onSend({ image: imageUrl });
-          
         }
       }
     } catch (error) {
@@ -105,76 +107,61 @@ export default class CustomActions extends React.Component {
     }
   }
 
-    onActionPress = () => {
-        const options = [
-          "Choose From Library",
-          "Take Picture",
-          "Send Location",
-          "Cancel",
-        ];
-        const cancelButtonIndex = options.length - 1;
-        this.context.actionSheet().showActionSheetWithOptions(
-          {
-            options,
-            cancelButtonIndex,
-          },
-          async (buttonIndex) => {
-            switch (buttonIndex) {
-              case 0:
-                console.log("user wants to pick an image");
-                return this.imagePicker();
-              case 1:
-                console.log("user wants to take a photo");
-                return this.takePhoto();
-              case 2:
-                console.log("user wants to get their location");
-                return this.getLocation();
-            }
-          }
-        );
-      };
+  onActionPress = () => {
+    const options = ['Choose From Library', 'Take Picture', 'Send Location', 'Cancel'];
+    const cancelButtonIndex = options.length - 1;
+    this.context.actionSheet().showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      async (buttonIndex) => {
+        switch (buttonIndex) {
+          case 0:
+            return this.pickImage();
+          case 1:            
+            return this.takePhoto();
+          case 2:           
+            return this.getLocation();
+        }
+      },
+    );
+  };
 
+  render() {
+    return (
+      <TouchableOpacity style={[styles.container]} onPress={this.onActionPress}>
+        <View style={[styles.wrapper, this.props.wrapperStyle]}>
+          <Text style={[styles.iconText, this.props.iconTextStyle]}>+</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
 
-      render() {
-        return (
-          <TouchableOpacity
-            accessible={true}
-            accessibilityLabel="More options"
-            accessibilityHint="Let’s you choose to send an image or your geolocation."
-            style={[styles.container]}
-            onPress={this.onActionPress}
-          >
-            <View style={[styles.wrapper, this.props.wrapperStyle]}>
-              <Text style={[styles.iconText, this.props.iconTextStyle]}>+</Text>
-            </View>
-          </TouchableOpacity>
-        );
-      }
-    }
+}
 
 const styles = StyleSheet.create({
-    container: {
-      width: 26,
-      height: 26,
-      marginLeft: 10,
-      marginBottom: 10,
-    },
-    wrapper: {
-      borderRadius: 13,
-      borderColor: '#b2b2b2',
-      borderWidth: 2,
-      flex: 1,
-    },
-    iconText: {
-      color: '#b2b2b2',
-      fontWeight: 'bold',
-      fontSize: 16,
-      backgroundColor: 'transparent',
-      textAlign: 'center',
-    },
-   }
-);
+  container: {
+    width: 26,
+    height: 26,
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+  wrapper: {
+    borderRadius: 13,
+    borderColor: '#b2b2b2',
+    borderWidth: 2,
+    flex: 1,
+  },
+  iconText: {
+    color: '#b2b2b2',
+    fontWeight: 'bold',
+    fontSize: 16,
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+  },
+});
 
 CustomActions.contextTypes = {
-    actionSheet: PropTypes.func,
+  actionSheet: PropTypes.func,
 };

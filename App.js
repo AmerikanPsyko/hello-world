@@ -14,14 +14,14 @@ const Stack = createStackNavigator();
 export default class HelloWorld extends Component {
  constructor(props) {
    super(props);
-  //  this.state = { text: '' };
+   this.state = { text: '' };
  }
 
 
  //Custom Action
-//  renderCustomActions = (props) => {
-//   return <CustomActions {...props} />;
-// };
+ renderCustomActions = (props) => {
+  return <CustomActions {...props} />;
+};
  
 
  render() {

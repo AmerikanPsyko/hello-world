@@ -15,6 +15,7 @@ import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import CustomActions from "./CustomActions";
 
+
 const firebase = require("firebase");
 require("firebase/firestore");
 
@@ -363,6 +364,8 @@ export default class Chat extends React.Component {
     );
   }
 }
+
+
 
 // Custom Styles
 const styles = StyleSheet.create({
