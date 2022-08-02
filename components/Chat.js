@@ -1,8 +1,19 @@
 import React from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Button,
+} from "react-native";
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
+import MapView from "react-native-maps";
+import CustomActions from "./CustomActions";
 
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -96,11 +107,9 @@ export default class Chat extends React.Component {
   };
 
   componentDidMount() {
-    
     let { name } = this.props.route.params;
     this.props.navigation.setOptions({ title: name });
 
-    
     NetInfo.fetch().then((connection) => {
       if (connection.isConnected) {
         this.setState({
@@ -147,7 +156,7 @@ export default class Chat extends React.Component {
     }
   }
 
-  // Adds messages 
+  // Adds messages
   onSend(messages = []) {
     this.setState(
       (previousState) => ({
@@ -170,7 +179,7 @@ export default class Chat extends React.Component {
     this.referenceChatMessages.add({
       uid: this.state.uid,
       _id: message._id,
-      text: message.text || '',
+      text: message.text || "",
       createdAt: message.createdAt,
       createdAt: message.createdAt,
       user: message.user,
@@ -179,19 +188,45 @@ export default class Chat extends React.Component {
     });
   };
 
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  renderCustomView (props) {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+          <MapView
+            style={{width: 150,
+              height: 100,
+              borderRadius: 13,
+              margin: 3}}
+            region={{
+              latitude: currentMessage.location.latitude,
+              longitude: currentMessage.location.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+      );
+    }
+    return null;
+  }
+
+
+
   // Offline storage
-  
-// renderInputToolbar(props) {
-//   if (this.state.isConnected == false) {
-//   } else {
-//     return(
-//       <InputToolbar
-//       {...props}
-//       />
-//     );
-//   }
-// }
-  
+
+  // renderInputToolbar(props) {
+  //   if (this.state.isConnected == false) {
+  //   } else {
+  //     return(
+  //       <InputToolbar
+  //       {...props}
+  //       />
+  //     );
+  //   }
+  // }
 
   // Customize color of the chat bubbles
   renderBubble(props) {
@@ -210,26 +245,116 @@ export default class Chat extends React.Component {
     );
   }
 
+  state = {
+    image: null,
+  };
+
+ 
+  // pickImage = async () => {
+  //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+  //   if (status === "granted") {
+  //     let result = await ImagePicker.launchImageLibraryAsync({
+  //       mediaTypes: "Images",
+  //     }).catch((error) => console.log(error));
+
+  //     if (!result.cancelled) {
+  //       this.setState({
+  //         image: result,
+  //       });
+  //     }
+  //   }
+  // };
+
+ 
+  // takePhoto = async () => {
+  //   const { status } = await Permissions.askAsync(
+  //     Permissions.CAMERA_ROLL,
+  //     Permissions.CAMERA
+  //   );
+
+  //   if (status === "granted") {
+  //     let result = await ImagePicker.launchCameraAsync({
+  //       mediaTypes: "Images",
+  //     }).catch((error) => console.log(error));
+
+  //     if (!result.cancelled) {
+  //       this.setState({
+  //         image: result,
+  //       });
+  //     }
+  //   }
+  // };
+
+ 
+  // getLocation = async () => {
+  //   const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  //   if (status === "granted") {
+  //     let result = await Location.getCurrentPositionAsync({});
+
+  //     if (result) {
+  //       this.setState({
+  //         location: result,
+  //       });
+  //     }
+  //   }
+  // };
+
+  //Render Components to screen
   render() {
-    let { bgColor} = this.props.route.params;
+    let { bgColor } = this.props.route.params;
     let name = this.props.route.params.name;
     this.props.navigation.setOptions({ title: name });
+
     return (
-        <View style={{
-          flex:1, 
-          justifyContent:'center', 
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
           backgroundColor: bgColor,
-          
-          }}>
+        }}
+      >
        
-        
-        
+        {/* <Button title="Get my location" onPress={this.getLocation} /> */}
+
+        {/* {this.state.location && (
+          <MapView
+            style={{ width: 300, height: 200 }}
+            region={{
+              latitude: this.state.location.coords.latitude,
+              longitude: this.state.location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+        )} */}
+
+        {/* Pick Image from Gallery */}
+        {/* <View style={{ flex: 1, justifyContent: "center" }}>
+          <Button
+            title="Pick an image from the library"
+            onPress={this.pickImage}
+          /> */}
+          {/* Take photo from Camera */}
+          {/* <Button title="Take a photo" onPress={this.takePhoto} />
+        </View>
+
+        {this.state.image && (
+          <Image
+            source={{ uri: this.state.image.uri }}
+            style={{ width: 200, height: 200 }}
+          />
+        )} */}
+
+        {/*Gifted Chat Main */}
         <GiftedChat
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
-          onSend={messages => this.onSend(messages)}
+          onSend={(messages) => this.onSend(messages)}
           user={{ _id: this.state.user._id, name: this.state.user.name }}
+          renderActions={this.renderCustomActions}
         />
+
         {/* renderInputToolbar={this.renderInputToolbar.bind(this)} */}
         {Platform.OS === "android" ? (
           <KeyboardAvoidingView behavior="height" />
@@ -239,11 +364,12 @@ export default class Chat extends React.Component {
   }
 }
 
+// Custom Styles
 const styles = StyleSheet.create({
   textWrote: {
-    paddingTop: '10%',
-    marginLeft: '1%',
+    paddingTop: "10%",
+    marginLeft: "1%",
     fontSize: 24,
-    fontWeight: '400',
-  }
-  });
+    fontWeight: "400",
+  },
+});

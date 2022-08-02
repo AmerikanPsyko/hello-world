@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
 
   chooseColor: {
     marginTop: "1%",
-    marginLeft: "25%",
+    marginLeft: "20%",
     justifyContent: 'center',
     
     
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     width: "88%",
     justifyContent: "center",
     alignItems: "center",
-    
+    borderColor: "#000000"
    
   },
 
@@ -227,5 +227,6 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontSize: 16,
     fontWeight: "600",
+    
   },
 });
