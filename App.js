@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CustomActions from './components/CustomActions';
+// import CustomActions from './components/CustomActions';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,9 +19,9 @@ export default class HelloWorld extends Component {
 
 
  //Custom Action
- renderCustomActions = (props) => {
-  return <CustomActions {...props} />;
-};
+//  renderCustomActions = (props) => {
+//   return <CustomActions {...props} />;
+// };
  
 
  render() {

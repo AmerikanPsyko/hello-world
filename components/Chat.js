@@ -9,9 +9,9 @@ import {
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
-import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
-import * as Location from "expo-location";
+// import * as Permissions from "expo-permissions";
+// import * as ImagePicker from "expo-image-picker";
+// import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import CustomActions from "./CustomActions";
 
@@ -176,10 +176,10 @@ export default class Chat extends React.Component {
   }
 
   // Add message to Firestore
-  addMessages = (message) => {
+  addMessages = () => {
     this.referenceChatMessages.add({
       uid: this.state.uid,
-      _id: message._id,
+      _id: message._id, 
       text: message.text || "",
       createdAt: message.createdAt,
       createdAt: message.createdAt,
