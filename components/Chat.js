@@ -56,22 +56,20 @@ export default class Chat extends React.Component {
     // go through each document
     querySnapshot.forEach((doc) => {
       // get the QueryDocumentSnapshot's data
-      let data = doc.data();
+      const data = doc.data();
       messages.push({
         _id: data._id,
-        text: data.text,
+        text: data.text || "",
         createdAt: data.createdAt.toDate(),
         user: data.user,
         image: data.image || null,
         location: data.location || null,
       });
     });
+
     this.setState({
       messages,
-      
     });
-    
-    this.saveMessages();
   };
 
   getMessages = async () => {
@@ -343,7 +341,7 @@ export default class Chat extends React.Component {
         <GiftedChat
           messages={this.state.messages}
           isConnected={this.state.isConnected}
-          // renderInputToolbar={this.renderInputToolbar}
+          renderInputToolbar={this.renderInputToolbar}
           renderActions={this.renderCustomActions}
           renderCustomView={this.renderCustomView}
           onSend={(messages) => this.onSend(messages)}

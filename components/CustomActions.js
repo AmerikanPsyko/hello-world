@@ -83,12 +83,14 @@ export default class CustomActions extends React.Component {
     }
   };
 
+  
+
   /**
    * Let the user take a photo with device's camera
    * @function takePhoto
    * @async
    */
-  takePhoto = async () => {
+   takePhoto = async () => {
     const { status } = await Permissions.askAsync(
       Permissions.CAMERA,
       Permissions.CAMERA_ROLL
@@ -109,12 +111,13 @@ export default class CustomActions extends React.Component {
     }
   };
 
+
   /**
    * get the location of the user by using GPS
    * @function getLocation
    * @async
    */
-  getLocation = async () => {
+   getLocation = async () => {
     try {
       const { status } = await Permissions.askAsync(Permissions.LOCATION);
       if (status === "granted") {
