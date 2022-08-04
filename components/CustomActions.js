@@ -1,3 +1,16 @@
+/**
+ * @description this file handles the CustomAction button in text input field
+ * @class CustomActions
+ * @requires React
+ * @requires React-Native
+ * @requires Prop-Types
+ * @requires Expo-Image-Picker
+ * @requires Expo-Permissions
+ * @requires Expo-Location
+ * @requires Firebase
+ * @requires Firestore
+ */
+
 //  import PropTypes
 import PropTypes from "prop-types";
 //import react
@@ -15,6 +28,36 @@ import firestore from 'firebase';
 // require("firebase/firestore");
 
 export default class CustomActions extends React.Component {
+
+  //Upload images to firestore
+  uploadImageFetch = async (uri) => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+
+    const imageNameBefore = uri.split("/");
+    const imageName = imageNameBefore[imageNameBefore.length - 1];
+
+    const ref = firebase.storage().ref().child(`images/${imageName}`);
+
+    const snapshot = await ref.put(blob);
+
+    blob.close();
+
+    return await snapshot.ref.getDownloadURL();
+  };
+
+
   /**
    * Let the user pick an image from the device's image library
    * @function imagePicker
@@ -117,7 +160,7 @@ export default class CustomActions extends React.Component {
     const imageNameBefore = uri.split("/");
     const imageName = imageNameBefore[imageNameBefore.length - 1];
 
-    const ref = firebase.storage().ref().child('error');
+    const ref = firebase.storage().ref().child(`images/${imageName}`);
 
     const snapshot = await ref.put(blob);
 
@@ -165,7 +208,7 @@ export default class CustomActions extends React.Component {
       <TouchableOpacity
         accessible={true}
         accessibilityLabel="More options"
-        accessibilityHint="Lets you choose to send an image or your geolocation."
+        accessibilityHint="Let’s you choose to send an image or your geolocation."
         style={[styles.container]}
         onPress={this.onActionPress}
       >

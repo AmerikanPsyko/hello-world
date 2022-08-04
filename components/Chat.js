@@ -14,10 +14,10 @@ import NetInfo from "@react-native-community/netinfo";
 // import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import CustomActions from "./CustomActions";
+import firebase from 'firebase';
+import firestore from 'firebase';
 
 
-const firebase = require("firebase");
-require("firebase/firestore");
 
 export default class Chat extends React.Component {
   constructor() {
@@ -53,24 +53,25 @@ export default class Chat extends React.Component {
 
   onCollectionUpdate = (querySnapshot) => {
     const messages = [];
-
+    // go through each document
     querySnapshot.forEach((doc) => {
+      // get the QueryDocumentSnapshot's data
       let data = doc.data();
       messages.push({
         _id: data._id,
-        text: data.text || "",
+        text: data.text,
         createdAt: data.createdAt.toDate(),
-        user: {
-          _id: data.user._id,
-          name: data.user.name,
-          avatar: data.user.avatar || "",
-        },
+        user: data.user,
         image: data.image || null,
+        location: data.location || null,
       });
     });
     this.setState({
       messages,
+      
     });
+    
+    this.saveMessages();
   };
 
   getMessages = async () => {
@@ -158,33 +159,27 @@ export default class Chat extends React.Component {
   }
 
   // Adds messages
-  onSend(messages = []) {
+  onSend = (messages = []) => {
     this.setState(
       (previousState) => ({
         messages: GiftedChat.append(previousState.messages, messages),
       }),
       () => {
-        // Async Storage save messages
+        this.addMessage();
         this.saveMessages();
-
-        // Recalls last message in state
-        if (this.state.isConnected === true) {
-          this.addMessages(this.state.messages[0]);
-        }
       }
     );
-  }
+  };
 
   // Add message to Firestore
-  addMessages = () => {
+  addMessage = () => {
+    const message = this.state.messages[0];
     this.referenceChatMessages.add({
-      uid: this.state.uid,
-      _id: message._id, 
+      _id: message._id,
       text: message.text || "",
       createdAt: message.createdAt,
-      createdAt: message.createdAt,
-      user: message.user,
-      image: message.image || null,
+      user: this.state.user,
+      image: message.image || '',
       location: message.location || null,
     });
   };
@@ -193,22 +188,19 @@ export default class Chat extends React.Component {
     return <CustomActions {...props} />;
   };
 
-  renderCustomView (props) {
+  renderCustomView(props) {
     const { currentMessage } = props;
     if (currentMessage.location) {
       return (
-          <MapView
-            style={{width: 150,
-              height: 100,
-              borderRadius: 13,
-              margin: 3}}
-            region={{
-              latitude: currentMessage.location.latitude,
-              longitude: currentMessage.location.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
       );
     }
     return null;
@@ -349,11 +341,15 @@ export default class Chat extends React.Component {
 
         {/*Gifted Chat Main */}
         <GiftedChat
-          renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
-          onSend={(messages) => this.onSend(messages)}
-          user={{ _id: this.state.user._id, name: this.state.user.name }}
+          isConnected={this.state.isConnected}
+          // renderInputToolbar={this.renderInputToolbar}
           renderActions={this.renderCustomActions}
+          renderCustomView={this.renderCustomView}
+          onSend={(messages) => this.onSend(messages)}
+          user={{
+            _id: this.state.uid,
+          }}
         />
 
         {/* renderInputToolbar={this.renderInputToolbar.bind(this)} */}
