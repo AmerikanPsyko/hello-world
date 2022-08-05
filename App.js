@@ -43,3 +43,6 @@ export default class HelloWorld extends Component {
   );
 }
 }
+
+
+console.disableYellowBox = true;
